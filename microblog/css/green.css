@@ -1,0 +1,135 @@
+@charset "utf-8";
+body {
+		font: 0.8em "Lucida Sans Unicode", "Lucida Grande", Arial, Helvetica, sans-serif;
+		color: #4F4A4A;
+		background: #F4FFDF;
+		margin: 0;
+		padding: 0;
+}
+#wrapper {
+		width: 600px;
+		margin: 50px auto;
+		background: #dbf5ab url(../images/logo.jpg) center top no-repeat;
+		padding: 25px 25px 25px 25px;
+		border: 12px solid #7fbf10;
+		position:relative;
+}
+h1 {
+		text-transform: uppercase;
+		text-align: center;
+		margin: 0;
+		padding: 0.3em 0;
+		text-indent:-99999px;
+}
+h2 {
+		margin: 0;
+		padding: 0.5em 0;
+		color:#568945;
+		font-family:Helvetica, Arial, Sans-serif;
+}
+p {
+		margin: 0;
+		padding: 0.4em 0;
+		color:#4F4A4A;
+		line-height:1.4em;
+}
+#nav {
+		list-style: none;
+		padding: 0;
+		margin: 10px 0 20px 0;
+		background: #7fbf10;
+		display: block;
+		overflow: hidden;
+		font-size: 1em;
+		height:33px;
+		font-weight:bold;
+		text-transform:capitalize;
+}
+#nav li {
+		display: inline;
+}
+#nav li a {
+		display: block;
+		float: left;
+		padding: 10px 20px;
+		color: white;
+		text-decoration: none;
+}
+
+#nav li a.current {
+		background: #449F00;
+}
+
+#nav li a:hover {
+		background: #449F00;
+		color:red;
+}
+#content img.right {
+		float: right;
+		margin: 0 0 8px 8px;
+}
+#foot {
+		padding: 15px;
+		color: #7fbf10;
+		text-align: center;
+		border-top:1px solid #7fbf10;
+}
+fieldset {
+	border: none;
+}
+textarea {
+	border: 1px dotted #449F00;
+	width: 430px;
+	height: 50px;
+	padding: 5px;
+}
+#comments, #comments li{
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+#comments li{
+	padding:.5em;
+	margin:.5em 0;
+	background:#fcfcfc;
+	border:1px solid #e1e1e1;
+}
+#comments li .info{
+	padding:.2em 20px;
+	background:#f1f1f1 url(images/ico_comments.gif) no-repeat 2px 50%;
+	margin:0;
+	color:#333;
+	font-family:Georgia, "Times New Roman", Times, serif;
+}
+#comments li .body{
+	padding:.5em 20px;
+}
+#commentForm {
+    width: 550px;
+}
+
+#messagewindow {
+	padding: 5px;
+	overflow: auto;
+}
+
+legend {
+	padding:0px 0px 0px 320px;	
+}
+legend span {
+	font-weight:bold;
+}
+#top1{
+    background-color:#555;
+	width:100%;
+	line-height:20px;
+	text-align:right;
+	color:#fff;
+	}
+#username{
+   width:10em;
+   background-color:#ccc;
+   }
+ #password{
+    width:10em;
+    background-color:#aaa;
