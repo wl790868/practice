@@ -28,7 +28,7 @@
     var res = findSame([1, 2, 3, 5, 6],[4, 5, 6, 7, 8, 9]);
     // console.log(res);
     //全排列
-    function sortAll(arr, flag){
+    /*function sortAll(arr, flag){
         var len = arr.length;
         if(len == flag){
             console.log(arr);
@@ -45,8 +45,26 @@
             arr[flag] = temp;
         }
     }
-    sortAll(['a','b','c'], 0);
-    //js快排
+    sortAll(['a','b','c'], 0);*/
+    //php快排
+    function quickSort(arr){
+        var arr_left = [];
+        var arr_right = [];
+        var len = arr.length;
+        var key = arr[0];
+        if(len <= 1) {
+            return arr;
+        }
+        for(i = 0; i < len; i++){
+            if(key >= arr[i]){
+                arr_left.push(arr[i]);
+            }else{
+                arr_right.push(arr[i]);
+            }
+        }
+        
+        return quickSort(arr_left).concat([key]. arr_right);
+    }
     function QuickSort(arr){
         if(arr.length <= 1){
             return arr;
@@ -122,7 +140,7 @@
         return result;
     }
     //js冒泡
-    function bubbleSort(arr){
+    /*function bubbleSort(arr){
         var len = arr.length;
         for(var i = 0; i < len; i++){
             for(var j = len -1; j > i; j--){
@@ -134,7 +152,7 @@
             }
         }
         return arr;
-    }
+    }*/
     var res = binarySearch([1, 2, 3, 4, 5, 6, 7], 4, 0, 7);
     var result = insertSort([2, 1, 5, 34, 6, 4, 3, 7, 9]);
     console.log(result);
