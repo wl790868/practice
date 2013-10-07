@@ -9,6 +9,7 @@
 <body>
 
 <script>
+    //js获取两个数组中的相同部分
     function findSame(arr1, arr2){
         var len1 = arr1.length, len2 = arr2.length;
         var i = 0, j = 0, result = [];
@@ -27,8 +28,8 @@
     }
     var res = findSame([1, 2, 3, 5, 6],[4, 5, 6, 7, 8, 9]);
     // console.log(res);
-    //全排列
-    /*function sortAll(arr, flag){
+    //js全排列
+    function sortAll(arr, flag){
         var len = arr.length;
         if(len == flag){
             console.log(arr);
@@ -45,7 +46,7 @@
             arr[flag] = temp;
         }
     }
-    sortAll(['a','b','c'], 0);*/
+    sortAll(['a','b','c'], 0);
     //js快排
     function quickSort(arr){
         var arr_left = [];
