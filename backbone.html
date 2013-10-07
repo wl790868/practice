@@ -1,0 +1,170 @@
+<!DOCTYPE>
+<html>
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+<script src="http://libs.baidu.com/underscore/1.3.3/underscore.js"></script>
+<script src="http://libs.baidu.com/backbone/0.9.2/backbone.js"></script>
+</head>
+<body>
+    <div id="contactapp">
+        <header>
+            <h1>通讯录</h1>
+        </header>
+        <section id="main">
+            <ul id="contact-list"></ul>
+        </section>
+        <div class="create"><input type="button" value="增加(弹出框)" id="addDia"></div>
+    </div>
+<script type="text/javascript">
+    (function($){
+        var Contact = Backbone.Model.extend({
+            defaults : {
+                name : null,
+                price : 20
+            },
+            validate : function(data){
+                console.log(data.price);
+                if(data.price < 10){
+                    return 'the price must be more than 10';
+                }
+            }
+        });
+        var ContactList = Backbone.Collection.extend({
+            model : Contact,
+            /*initialize : function(models, options){
+                console.dir(options);
+                this.on('add', options.view.addOne);
+            }*/
+        });
+
+        var person = new Contact();
+        var person1 = new Contact({name : 'chenke'});
+        var person2 = new Contact({name : 'lixiaomeng'});
+        var person3 = new Contact({name : 'yangyaqin'});
+        var persons = new ContactList([person1, person2, person3]);
+
+
+        person1.on('change : price', function(model){
+            var price = model.previous('price');
+            var value = model.get('price');
+            console.log(price, value);
+            if(price < value){
+                console.log('price is up ' + (value - price));
+            }else if(price > value){
+                console.log('price is down ' + (price - value));
+            }else{
+                console.log('no change');
+            }
+        });
+
+        person1.on('error', function(model, error){
+            console.log(error);
+        });
+
+        person1.set('price', 5);
+        console.dir(person1.get('price'));
+
+
+        var AppView = Backbone.View.extend({
+            el : $('body'),
+            initialize : function(){
+                this.contacts = new ContactList(null, {view : this});
+            },
+            events : {
+                'click #addDia' : 'addDia'
+            },
+            addDia : function(){
+                var name = prompt('please input name');
+                var c = new Contact({name : name});
+                this.addOne(c);
+            },
+            addOne : function(model){
+                console.log(model.get('name'));
+                $('#contact-list').append('<li>' + model.get('name') + '</li>');
+            }
+        });
+        var app = new AppView();
+
+        //路由控制功能
+    var CustomRouter = Backbone.Router.extend({
+        routes : {
+            '' : 'index',
+            'list' : 'getList', //url#list
+            'detail/:id' : 'query', //url#list/1001
+            '*error' : 'showError'
+        },
+        index : function(){
+            console.log('index');
+        },
+        getList : function(){
+            console.log('getlist');
+        },
+        query : function(id){
+            console.log(id);
+        },
+        showError : function(error){
+            console.log(error);
+        }
+    });
+    var custom = new CustomRouter();
+    Backbone.history.start();
+    function createHtml(name, phone, addr, email, imageSrc){
+        var html = '';
+        html += '<div class=personInfo>'
+        html += '<p>Name: ' + name + '</p>';
+        html += '<p>Phone: ' + phone + '</p>';
+        html += '<p>Addr: ' + addr + '</p>';
+        html += '<p>Email: ' + email + '</p>';
+        html += '<img src="' + imageSrc + '">';
+        html += '</div>'
+        return html;
+    }
+    //
+    /*var query = _(function(){
+        //进行查询操作
+        $.ajax({
+            url : 'get.php',
+            data : {"name : chenke"},
+            success : function(data){
+                $('#result').html(data);
+            }
+        });
+    }).debounce(200);
+    $('#search').bind('keypress', query);*/
+    })(jQuery);
+
+
+   /* var model = new Backbone.Model.extend();
+    model.on('custom', function(p1, p2){
+
+    });
+    model.trigger('custom', 'value1', 'value2');
+    model.off('custom');
+    //路由控制功能
+    var CustomRouter = Backbone.Router.extend({
+        routes : {
+            '' : 'index',
+            'list' : 'getList', //url#list
+            'detail/:id' : 'query', //url#list/1001
+            '*error' : 'showError'
+        },
+        index : function(){
+            console.log('index');
+        },
+        getList : function(){
+            console.log('getlist');
+        },
+        query : function(id){
+            console.log(id);
+        },
+        showError : function(error){
+            console.log(error);
+        }
+    });
+    var custom = new CustomRouter();
+    Backbone.history.start();*/
+</script>
+</body>
+</html>

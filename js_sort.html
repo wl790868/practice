@@ -1,0 +1,161 @@
+<!DOCTYPE>
+<html>
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+</style>
+</head>
+<body>
+
+<script>
+    function findSame(arr1, arr2){
+        var len1 = arr1.length, len2 = arr2.length;
+        var i = 0, j = 0, result = [];
+        while(i < len1 && j < len2){
+            if(arr1[i] == arr2[j]) {
+                result.push(arr1[i]);
+                i++;
+                j++;
+            }else if(arr1[i] < arr2[j]){
+                i++;
+            }else{
+                j++;
+            }
+        }
+        return result;
+    }
+    var res = findSame([1, 2, 3, 5, 6],[4, 5, 6, 7, 8, 9]);
+    // console.log(res);
+    //全排列
+    /*function sortAll(arr, flag){
+        var len = arr.length;
+        if(len == flag){
+            console.log(arr);
+        }else{
+            for(var i = flag; i < arr.length; i++){
+                swap(arr, i , flag);
+                sortAll(arr, flag + 1);
+                swap(arr, i, flag);
+            }
+        }
+        function swap(arr, i, flag){
+            var temp = arr[i];
+            arr[i] = arr[flag];
+            arr[flag] = temp;
+        }
+    }
+    sortAll(['a','b','c'], 0);*/
+    //php快排
+    function quickSort(arr){
+        var arr_left = [];
+        var arr_right = [];
+        var len = arr.length;
+        var key = arr[0];
+        if(len <= 1) {
+            return arr;
+        }
+        for(i = 0; i < len; i++){
+            if(key >= arr[i]){
+                arr_left.push(arr[i]);
+            }else{
+                arr_right.push(arr[i]);
+            }
+        }
+        
+        return quickSort(arr_left).concat([key]. arr_right);
+    }
+    function QuickSort(arr){
+        if(arr.length <= 1){
+            return arr;
+        }
+        var index = Math.floor(arr.length / 2);
+        var key = arr.splice(index, 1)[0];
+        var left = [], right = [];
+        for(var i = 0; i < arr.length; i++){
+            if(arr[i] < key){
+                left.push(arr[i]);
+            }else{
+                right.push(arr[i]);
+            }
+        }
+        return QuickSort(left).concat([key], QuickSort(right));
+    }
+    //js二分查找
+    function binarySearch(arr, key, low, hight){
+        var mid = Math.floor((low + hight) / 2);
+        var result = -1;
+        console.log(key, low, hight, mid);
+        if(key == arr[mid]){
+            result = mid;
+            return result;
+        }else if(key > arr[mid]){
+            hight = mid - 1;
+            binarySearch(arr, key, low, hight);
+        }else{
+            low = mid + 1;
+            binarySearch(arr, key, low, hight);
+        }
+        return result;
+    }
+    //js的归并排序
+    function mergeSort(arr){
+        var len = arr.length;
+        if(len > 1){
+            var index = Math.floor(len / 2);
+            var left = arr.slice(0, index), right = arr.slice(index);
+            return merge(mergeSort(left), mergeSort(right));
+        }else{
+            return arr;
+        }
+        function merge(left, right){
+            var arr = [];
+            while(left.length && right.length){
+                if(left[0] < right[0]){
+                    arr.push(left.shift());
+                }else{
+                    arr.push(right.shift());
+                }
+            }
+            return arr.concat(left, right);
+        }
+    }
+    //js插入排序
+    function insertSort(arr){
+        var result =[];
+        result.push(arr[0]);
+        for(var i = 1, len = arr.length; i < len; i++){
+            var el = arr[i];
+            if(result[i - 1] > el){
+                for(var j = 0; j < i; j++){
+                    if(result[j] > el){
+                        result.splice(j, 0, el);
+                        break;
+                    }
+                }
+            }else{
+                result.push(el);
+            }
+        }
+        return result;
+    }
+    //js冒泡
+    /*function bubbleSort(arr){
+        var len = arr.length;
+        for(var i = 0; i < len; i++){
+            for(var j = len -1; j > i; j--){
+                if(arr[j] > arr[j+1]){
+                    var temp = arr[j];
+                    arr[j] = arr[j+1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+        return arr;
+    }*/
+    var res = binarySearch([1, 2, 3, 4, 5, 6, 7], 4, 0, 7);
+    var result = insertSort([2, 1, 5, 34, 6, 4, 3, 7, 9]);
+    console.log(result);
+</script>
+</body>
+</html>
