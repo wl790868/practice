@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <style type="text/css">
+        
+    </style>
+</head>
+<body>
+   <div id='ball' style='position:absolute;background-color:#00ff00;width:30px;height:30px;border-radius:20px;'></div>
+<script>
+    var el = document.getElementById('ball');
+    var g = 9.8;     //重力加速度
+    freeFall(el, 4.9, 10);
+    /*自由落到函数
+      *param height : 初始高度;
+      *param speed  : 初始速度;
+    */
+    function freeFall(element, height, speed){
+        var start = (new Date()).getTime();
+        var el = element;
+        var originalStyle = el.style.cssText;
+        var timeInterval = 50 ,// 50ms 变换一下速度;
+            left = el.offsetLeft, //初始位置
+            top = el.offsetTop; //
+        var time = Math.sqrt(2 * height / g) * 1000 // h = 1/2 * g * t * t 算得时间 单位为ms;
+        console.log(originalStyle, left, top, time);
+        moving();
+        function moving(){
+            var now = (new Date()).getTime();
+            var elapsed = now - start;
+            var fraction = elapsed / time;
+            console.log(now, elapsed, fraction);
+            if(fraction < 1){
+                var x = left + speed * elapsed / 100; //水平位移; 时间单位为ms 所以需要转换;
+                var y = top + 0.5 * g * elapsed * elapsed / 10000; //垂直位移 
+
+                el.style.left = x + 'px';
+                el.style.top = y + 'px'; 
+                console.log(x, y);
+                setTimeout(moving, Math.min(25, time - elapsed));
+            }else{
+                el.style.cssText = originalStyle; //恢复原状
+            }
+        }
+    }
+</script>
+</body>
+</html>
