@@ -9,7 +9,7 @@
 <body>
 
 <script>
-    //js获取两个数组中的相同部分
+    //js查找两个数组中相同的元素
     function findSame(arr1, arr2){
         var len1 = arr1.length, len2 = arr2.length;
         var i = 0, j = 0, result = [];
@@ -48,24 +48,6 @@
     }
     sortAll(['a','b','c'], 0);
     //js快排
-    function quickSort(arr){
-        var arr_left = [];
-        var arr_right = [];
-        var len = arr.length;
-        var key = arr[0];
-        if(len <= 1) {
-            return arr;
-        }
-        for(i = 0; i < len; i++){
-            if(key >= arr[i]){
-                arr_left.push(arr[i]);
-            }else{
-                arr_right.push(arr[i]);
-            }
-        }
-        
-        return quickSort(arr_left).concat([key]. arr_right);
-    }
     function QuickSort(arr){
         if(arr.length <= 1){
             return arr;
@@ -154,9 +136,43 @@
         }
         return arr;
     }
+    //js求最大子序列
+    function max_sub(arr){
+        var max = 0, temp_sum = 0, len = arr.length;
+        for(var i =0; i < len; i++){
+            temp_sum += arr[i];
+            if(temp_sum > max){
+                max = temp_sum;
+            }else if(temp_sum < 0){
+                temp_sum = 0;
+            }
+        }
+        return max;
+    }
+    //js实现中文字段截取无乱码
+    /*这里应该还需要判断str的长度，因为中文字符应该占2个长度*/
+    function GBsubstr(str, start, len){
+        if(str.length < len){
+            return str;
+        }else{
+            var result = '';
+            var length = start + len;
+            for(var i = start; i < length; i++){
+                if(str.charCodeAt(i) > 255){
+                    result += str.substr(i, 2);
+                    i++;
+                }else{
+                    result += str.substr(i, 1);
+                }
+            }
+            return result;
+        }
+    }
+    var str = '我是张三';
+    console.log(str.length,GBsubstr(str, 0, 4));
     var res = binarySearch([1, 2, 3, 4, 5, 6, 7], 4, 0, 7);
     var result = insertSort([2, 1, 5, 34, 6, 4, 3, 7, 9]);
-    console.log(result);
+    // console.log(result);
 </script>
 </body>
 </html>
