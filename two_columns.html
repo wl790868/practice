@@ -4,44 +4,72 @@
     <meta charset="utf-8">
     <title>用三个div块完成两栏布局</title>
     <style type="text/css">
-        body{ margin:0; height:100%}
-        html{ height:100%} /*兼容firefox的div高度100%*/
+        body{ margin: 0; 
+            height:100%;
+            position: relative;
+        }
+        html{ 
+            height: 100%;
+            } /*兼容firefox的div高度100%*/
         .first{
             background: #ccc;
-            height: 100%;
-            width: 100%;
-            box-sizing:border-box;  
-            /*不让padding增加宽度*/
-            padding-left: 220px;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: -100;
+            height: 30%;
+            width: 200px;
         }
         .second{
-            z-index: 400;
-            width: 200px;
-            height: 300px;
-            margin-right: 20px;
+            position: absolute;
+            height: 100%;
+            left: 220px;
+            right: 0px;
+            /*完美获取剩余宽度*/
             background: #cc0;
             overflow: hidden;
+            top: 0;
+            /*min-width: 600px;*/
         }
         .third{
-            overflow: hidden;
-            z-index: 900;
             width: 200px;
             height: 300px;
             margin-top: 20px;
-            background: #cc0;
+            background: #ccc;
+            float:left;
         }
     </style>
 </head>
 <body>
     <div class='first'>
-        <img src="01.jpg" alt="">
     </div>
+    <div class="third"></div>
     <div class="second"></div>
-    <div class="third">
-    </div>
+<script>
+    //js去除重复数组
+    function deleteSame(arr){
+        var res = [];
+        for(var i = 0; i < arr.length; ){
+            res.push(arr.shift());
+            for(var j = 0; j < arr.length; j++){
+                if(arr[j] == res[res.length - 1]){
+                    arr.splice(j, 1);
+                }  
+            }
+        }
+        return res;
+    }
+    function deleteSame2(arr){
+        var obj = {};
+        for(var i = 0, len = arr.length; i < len; i++){
+            var el = arr[i];
+            if(typeof(obj[el]) == 'undefined'){
+                obj[el] = 1;
+            }
+        }
+        var result = [];
+        for(var i in obj){
+            result.push(i.valueOf());
+        }
+        return result;
+    }
+    console.log(deleteSame2([1, 2, 3, 4, 3, 4, 2, 5]));
+</script>  
 </body>
 </html>

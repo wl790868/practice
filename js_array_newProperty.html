@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>ES5中新增的Array方法详细说明</title>
+    <style type="text/css">
+    </style>
+</head>
+<body>
+<script>
+//js的forEach函数
+var database = {
+    users : ['lixiaomeng', 'huangxiaoxia', 'yangyaqin'],
+    sendEmail : function(user){
+        if(this.isValidUser(user)){
+            console.log('hello ' + user);
+        }else{
+            console.log('error ' + user);
+        }
+    },
+    isValidUser : function(user){
+        return /^li/.test(user);
+    }
+
+};
+database.users.forEach(database.sendEmail, database);
+var arr = [1, 2, 3, 4];
+var arrSquares = arr.map(function(item, index, arr){
+    return item * item;
+});
+console.dir(arrSquares);
+//ie6 - ie8 扩展 forEach
+if(typeof Array.prototype.forEach != "function"){
+    Array.prototype.forEach = function(fn, context){
+        for(var k = 0; len = this.length; k < len; k++){
+            if(typeof fn == 'function' && Object.prototype.hasOwnProperty.call(this, k){
+                fn.call(context, this[k], k, this);
+            })
+        }
+    }
+}
+// map方法扩展
+if(typeof Array.prototype.map != 'function'){
+    Array.prototype.map = function(fn, context){
+        var res =[];
+        if(typeof fn == 'function'){
+            arr.push(fn.call(context, this[k], k, this));
+        }
+        return res;
+    }
+}
+//filter方法扩展
+if(typeof Array.prototype.filter != 'function'){
+    Array.prototype.filter = function(fn, context){
+        var res = [];
+        if(typeof fn == 'function'){
+            fn.call(context, this[k], k, this) && arr.push(this[k]);
+        }
+        return res;
+    }
+}
+//some
+if(typeof Array.prototype.some != 'function'){
+    Array.prototype.some = function(fn, context){
+        var flag = false;
+        if(typeof fn == 'function'){
+            for(var k = 0, len = this.length; k < len; k++){
+                if(flag == true) break;
+                flag = ! fn.call(context, this[k], k, this);
+            }
+        }
+        return flag;
+    }
+}
+// indexOf
+if(typeof Array.prototype.indexOf != 'function'){
+    Array.prototype.indexOf = function(searchElement, fromIndex){
+        var index = -1;
+        var fIndex = fromIndex || 0;
+        for(var k = fIndex, len = this.length; k < len; k++){
+            if( this[k] == searchElement){
+                index = k;
+                break
+            }
+        }
+        return index;
+    }
+}
+</script>
+<script>
+    <% for(var i = 0; i < list.length; i++){
+        <% var item = list[i] %>
+        <li>
+            <span><%= item.firstName %> <%= item.lastName%></span>
+    }
+</script>
+</body>
+</html>

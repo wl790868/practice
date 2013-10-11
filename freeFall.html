@@ -1,48 +1,90 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+    <meta charset='utf-8'>
     <style type="text/css">
-        
     </style>
 </head>
 <body>
-   <div id='ball' style='position:absolute;background-color:#00ff00;width:30px;height:30px;border-radius:20px;'></div>
 <script>
-    var el = document.getElementById('ball');
-    var g = 9.8;     //重力加速度
-    freeFall(el, 4.9, 10);
-    /*自由落到函数
-      *param height : 初始高度;
-      *param speed  : 初始速度;
-    */
-    function freeFall(element, height, speed){
-        var start = (new Date()).getTime();
-        var el = element;
-        var originalStyle = el.style.cssText;
-        var timeInterval = 50 ,// 50ms 变换一下速度;
-            left = el.offsetLeft, //初始位置
-            top = el.offsetTop; //
-        var time = Math.sqrt(2 * height / g) * 1000 // h = 1/2 * g * t * t 算得时间 单位为ms;
-        console.log(originalStyle, left, top, time);
-        moving();
-        function moving(){
-            var now = (new Date()).getTime();
-            var elapsed = now - start;
-            var fraction = elapsed / time;
-            console.log(now, elapsed, fraction);
-            if(fraction < 1){
-                var x = left + speed * elapsed / 100; //水平位移; 时间单位为ms 所以需要转换;
-                var y = top + 0.5 * g * elapsed * elapsed / 10000; //垂直位移 
-
-                el.style.left = x + 'px';
-                el.style.top = y + 'px'; 
-                console.log(x, y);
-                setTimeout(moving, Math.min(25, time - elapsed));
-            }else{
-                el.style.cssText = originalStyle; //恢复原状
-            }
+function class10(){
+    this.sub = function(a, b){
+        console.log(a - b);
+    }
+}
+function class11(){
+    this.add = function(a, b){
+        console.log(a + b);
+    }
+}
+function class2(){
+    class10.call(this);
+    class11.call(this);
+}
+var c2 = new class2();
+c2.add(1, 2);
+c2.sub(3, 1);
+/*生成数组*/
+var len = 100; //长度为10000的测试数组
+function makeArray(len){
+    var array = [];
+    console.dir(array);
+    for(var i = 0; i < len; i++){
+        if(i != 52 && i != 54 && i != 63){ //抽出的数字
+            array.push(i);
         }
     }
+    console.dir(array);
+
+    array = shuffle(array);
+ 
+    //打乱数组顺序
+    function shuffle(arr){
+        // for(var rnd, tmp, i = arr.length; i; rnd = parseInt(Math.random() * i), tmp = arr[--i], arr[i] = arr[rnd], arr[rnd] = tmp);
+        for(var i = arr.length - 1; i; i--){
+            var temp, rnd = parseInt(Math.random() * i);
+            temp = arr[i];
+            arr[i] = arr[rnd];
+            arr[rnd] = temp;
+        }
+        console.dir(arr);
+        return arr;
+    }
+ 
+    return array;
+}
+var arr = makeArray(len);
+/*数组生成的另外一种方式*/
+var array = new Array(10001);
+var newArr = array.join('0').split('').map(function(n, i){return i;}).sort(function(){
+    return Math.random() > 0.5
+});
+
+//给首尾各加一个数，以保证以下的算法能找到首尾两个被抽出的数
+arr.unshift(0);
+arr.push(len+1);
+
+var res = [], start = (new Date).getTime(); //开始计时点
+
+//按数值大小排序
+arr.sort(function(a,b){
+    return a-b;
+});
+
+//找到抽出的数
+arr.sort(function(a,b){
+    if(b - a != 1){
+        while(a < b - 1){
+            a++
+            res.push(a);
+        }
+    }
+});
+ 
+time = (new Date).getTime() - start; //结束计时点
+
+// console.dir(arr);
+
 </script>
 </body>
 </html>
