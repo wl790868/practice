@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>用三个div块完成两栏布局</title>
+    <style type="text/css">
+        body{ margin:0; height:100%}
+        html{ height:100%} /*兼容firefox的div高度100%*/
+        .first{
+            background: #ccc;
+            height: 100%;
+            width: 100%;
+            box-sizing:border-box;  
+            /*不让padding增加宽度*/
+            padding-left: 220px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -100;
+        }
+        .second{
+            z-index: 400;
+            width: 200px;
+            height: 300px;
+            margin-right: 20px;
+            background: #cc0;
+            overflow: hidden;
+        }
+        .third{
+            overflow: hidden;
+            z-index: 900;
+            width: 200px;
+            height: 300px;
+            margin-top: 20px;
+            background: #cc0;
+        }
+    </style>
+</head>
+<body>
+    <div class='first'>
+        <img src="01.jpg" alt="">
+    </div>
+    <div class="second"></div>
+    <div class="third">
+    </div>
+</body>
+</html>
