@@ -1,0 +1,41 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>读取字符串中的所有重复元素和重复元素的个数</title>
+</head>
+<body>
+<script type='text/javascript'>
+    var len = 10, initVal = '1';
+
+    console.log(initVal);
+    for(var i = 0; i < len; i++){
+         initVal = getLen(initVal);
+    }
+    function getLen(str){
+        var res = {};
+        while(str.length){
+            var el = str.charAt(0);
+            var reg = new RegExp(el, 'g');
+            var oldStr = str;
+            var newStr = str.replace(reg, '');
+            var len = oldStr.length - newStr.length;
+            str = newStr;
+            res[el] = len;
+        }
+
+        /*转为字符串*/
+        var result = '';
+        for(var k in res){
+            var temp = res[k] +' ' + k + ' ';
+            result += temp;
+        }
+        console.log(result);
+        /*去掉字符串的空格元素*/
+        result = result.replace(/\s/g, '');
+        return result;
+    }
+    // console.log(getLen('caab'), getLen('3112'));
+</script>
+</body>
+</html>
