@@ -1,0 +1,106 @@
+<!DOCTYPE>
+<html>
+<head></head>
+<style type="text/css">
+	.android{
+		position: absolute;
+		left: 500px;
+		top: 200px;
+	}
+	/* head */
+	.head{
+		width: 336px;
+		height: 155px;
+		background: #a5c63b;
+		border-radius: 200px 200px 0 0;
+		position: absolute;
+		top: -170px;
+	}
+	.head:before, .head:after{
+		background: #a5c63b;
+		content: '';
+		width: 10px;
+		height: 53px;
+		position: absolute;
+		top: -30px;
+		border-radius: 20px 20px 0 0;
+	}
+	.head:before{
+		-webkit-transform: translate(255px, 0px) rotate(30deg); 
+		-moz-transform:translate(255px, 0px) rotate(30deg); 
+		-o-transform:translate(255px, 0px) rotate(30deg); 
+	}
+	.head:after{
+		-webkit-transform: translate(63px, 0px) rotate(-30deg);
+		-moz-transform: translate(63px, 0px) rotate(-30deg);
+		-o-transform: translate(63px, 0px) rotate(-30deg);
+	}
+	/* eyes */
+	.eyes:before, .eyes:after{
+		background: #fff;
+		content: '';
+		width: 27px;
+		height: 27px;
+		top: 68px;
+		position: absolute;
+		border-radius: 20px;
+	}
+	.eyes:before{
+		left: 78px;
+	}
+	.eyes:after{
+		right: 78px;
+	}
+	/* body */
+	.body{
+		width: 336px;
+		height: 285px;
+		background: #a5c63b;
+		border-radius: 0px 0px 30px 30px;
+		position: absolute;
+	}
+	.body:before, .body:after{
+		background: #a5c63b;
+		content: '';
+		width: 75px;
+		height: 122px;
+		bottom: -122px;
+		position: absolute;
+		border-radius: 0 0 50px 50px;
+
+	}
+	.body:before{
+		left: 68px;
+	}
+	.body:after{
+		right: 68px;
+	}
+	/* arms */
+	.arms:before, .arms:after{
+		background: #a5c63b;
+		content: '';
+		width: 75px;
+		height: 233px;
+		top:-8px;
+		position: absolute;
+		border-radius: 40px;
+	}
+	.arms:before{
+		left: -90px;
+	}
+	.arms:after{
+		right: -90px;
+	}
+	
+</style>
+<body>
+	<div class="android">
+		<div class="head">
+			<div class="eyes"></div>
+		</div>
+		<div class="body">
+			<div class="arms"></div>
+		</div>
+	</div>
+</body>
+</html>
