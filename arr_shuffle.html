@@ -1,0 +1,60 @@
+<!DOCTYPE>
+<html>
+<head>
+	<meta charset='utf-8'>
+</head>
+<style type="text/css">
+	
+</style>
+<body>
+	<script type="text/javascript">
+		/*生成数组 方法一
+		@param len数组长度
+		@param items屏蔽元素，数组
+		*/
+		function makeArray(len,items){
+			var arr = [];
+			for(var i = 0; i < len; i++){
+				arr.push(i);
+			}
+			for(var j = 0, l = items.length; j < l; j++){
+				console.log(arr.splice((items[j]), 1));
+			}
+			console.dir(arr);
+			return arr;
+		}
+		var array1 = makeArray(100, [2, 4, 6, 89]);
+		/*数组洗牌 */
+		function shuffle(arr){
+			for(var i = arr.length - 1; i; i--){
+				var temp, random = parseInt(Math.random() * i);
+					temp = arr[i];
+					arr[i] = arr[random];
+					arr[random] = temp;
+				
+			}
+			console.dir(arr);
+			return arr;
+		}
+		shuffle(array1);
+		
+		/*方法二*/
+		function makeArr(len,items){
+			var arr = new Array(len + 1);
+			var result = arr.join('0').split('').map(function(item, index){return index;});
+			for(var j = 0, l = items.length ; j < l; j++){
+				console.log(result.splice((items[j]), 1));
+			}
+			return result;
+		}
+		/*这会有很多连续元素，不推荐使用，但是速度很快*/
+		function arrShuffle(arr){
+			var result = arr.sort(function(){
+				return Math.random() > 0.5;
+			});
+			return result;
+		}
+		console.dir(arrShuffle(makeArr(100, [2, 4, 6, 43])));
+	</script>
+</body>
+</html>
