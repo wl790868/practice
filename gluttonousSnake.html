@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html>    
+    <head>
+        <title>贪吃蛇</title>
+    </head>
+    <body>
+        <canvas id="myCanvas" width="240" height="240" style="border: 1px solid #d3d3d3"></canvas>
+        <script>
+            var ctx = document.getElementById('myCanvas').getContext('2d');
+
+            // r表示蛇，co表示蛇前进的方向，默认向下， e表示食物
+            var r = [{x : 10, y : 9}, {x : 10, y : 8}],
+                co = 40,
+                e = null;
+
+            // 给蛇加上阴影效果
+            ctx.shadowBlur = 20, ctx.shadowColor = 'black';
+
+            function move () {
+
+                // 游戏是否结束
+                if(check(r[0], 0) || r[0].x < 0 || r[0].x >= 24 || r[0].y < 0 || r[0].y >= 24){
+                    return;
+                }
+
+                // 如果有食物，则根据蛇前进的方向判断是否吃到了食物，并且将蛇数组中最后一个元素换到首部
+                e != null && ((co == 40 && r[0].x == e.x && r[0].y + 1 == e.y) || (co == 38 && r[0].x == e.x && r[0].y - 1 == e.y) || (co == 37 && r[0].x - 1 == e.x && r[0].y == e.y) || (co == 39 && r[0].x + 1 == e.x && r[0].y == e.y)) ? (r.unshift(e), e = null, r.unshift(r.pop()), console.log('food')) : (r.unshift(r.pop()), console.log('no food'));
+                // 根据方向，重新设定蛇数组元素的坐标，从而进行移动
+                (co == 40 || co == 38) ? (r[0].x = r[1].x, r[0].y = r[1].y + (co == 40 ? 1 : -1)) : (r[0].x = r[1].x + (co == 39 ? 1 : -1), r[0].y = r[1].y);
+                console.dir(r);
+                // 清空屏幕
+                ctx.clearRect(0, 0, 240, 240);
+
+                // 如果有食物，则绘制食物
+                if (e) {
+                    ctx.fillRect(e.x * 10, e.y *10, 10, 10);
+                }
+
+                // 绘制蛇
+                for (var i = 0; i < r.length; i++) {
+                    ctx.fillRect(r[i].x * 10, r[i].y * 10, 10, 10);
+                }
+
+                // 如果没有食物，则随机位置上加入一粒食物
+                while (e == null || check(e)) {
+                    e = {y : (Math.random() * 24 >>> 0), x : (Math.random() * 24 >>> 0)};
+                    console.dir(e);
+                }
+
+                // 判断游戏是否结束
+                if(check(r[0], 0) || r[0].x < 0 || r[0].x >= 24 || r[0].y < 0 || r[0].y >= 24){
+                    alert('game over! the length is : ' + (r.length - 2) );
+                }
+            }
+
+            // move();
+            // 循环，间隔100ms
+            // setInterval(move, 100);
+        document.onclick = function () {
+            move();
+        }
+
+        // 加入键盘事件， 用方向键控制蛇前进方向
+        document.onkeyup = function (event) {
+            co = event.keyCode >= 37 && event.keyCode <= 40 && (Math.abs(event.keyCode - co) != 2) ? event.keyCode : co;
+        }
+
+        // 判断指定位置是否与蛇重叠
+        function check (e, j) {
+            for (var i =0; i < r.length; i++) {
+                if (j != i && r[i].x == e.x && r[i].y == e.y) {
+                    return true;
+                }
+                return false;
+            }
+        }
+        </script>
+    </body>
+</html>
