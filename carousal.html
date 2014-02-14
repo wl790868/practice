@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html>    
+    <head>
+        <title>旋转木马</title>
+        <script type="text/javascript"
+            src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js">
+        </script>
+        <style type="text/css">
+         
+        </style>
+        
+    </head>
+    <body>
+        <div class="carousel" ><!-- This is the wrapping element -->
+            <a href="http://en.wikipedia.org/wiki/Self-portrait_(Leonardo_da_Vinci)" target="_blank">
+                <img src="images/pic1.png" alt="images/pic 1"/>
+            </a>
+            <img id="pic2" src="images/pic2.png" alt="images/pic 2"/>
+            <img src="images/pic3.png" alt="images/pic 3"/>
+            <img src="images/pic4.png" alt="images/pic 4"/>
+            <img src="images/pic5.png" alt="images/pic 5"/>
+            <img src="images/pic6.png" alt="images/pic 6"/>
+            <img src="images/pic7.png" alt="images/pic 7"/>
+            <img src="images/pic8.png" alt="images/pic 8"/>
+            <img src="images/pic9.png" alt="images/pic 9"/>
+        </div>
+    <script>
+        (function ($) {
+            // Function to execute a callback when an image has been loaded, either from network or from browser cache.
+            var loadImage = function ($image, src, callback) {
+
+                // Bind the load event before setting the src.
+                $image.bind('load', function (evt) {
+
+                    // Image has loaded, so ubind event and callback.
+                    $image.unbind('load');
+                    callback($image);
+                }).each(function () {
+                    // For Gecko-based browser, check the complete property, and trigger the event manually if image loaded
+                    if ($image[0].complete) {
+                        $image.trigger('load');
+                    }
+                });
+
+                // For Webkit browser, the following line ensures load event fires if image src is the same as last iamge src.
+                // this is done by setting the src to an empty string initially.
+                if ($.browser.Webkit) {
+                    $image.attr('src', '');
+                }
+                $image.attr('src', src);
+            }; 
+
+            // Create a single carousel item.
+            var createItem = function ($image, angle, options) {
+                var loaded = false,  // Flag to indicate image has loaded.
+                    orgWidth,        // Original, unscaled width of image.
+                    orgHeight,       // Original, unscaled height of image
+                    $originDiv,      // Image is attached to this div.
+                // a Range used in the scale calculation to ensure the frontmos item has a scale of 1, and the farthest item has a scale as defined in options.minScale.
+                    sizeRange = (1 - options.minScale) * 0.5,
+                // An object to store the public update function.
+                    that;
+                // Make image invisible and set its positioning to absolute.
+                $image.css({
+                    opacity : 0,
+                    position : 'absolute'
+                });
+                // Create a div element ($origindiv). The image will be attached to it.
+                $originDiv = $image.wrap('<div style="position: absolute;">').parent();
+                that = {
+                    update : function (ang) {
+                        var sinVal, scale, x, y;
+
+                        // Rotate the item.
+                        ang += angle;
+
+                        // Calculate scale.
+                        sinVal = Math.sin(ang);
+                        scale = ((sinVal + 1) * sizeRange) + options.minScale;
+                        // Calculate position and zIndex of origin div.
+                        x = ((Math.cos(ang) * options.radiusX) * scale) + options.width / 2;
+                        y = ((sinVal * options.radiusY) *scale) + options.height / 2;
+                        $originDiv.css({
+                            left : (x >> 0) + 'px', 
+                            top : (y >> 0) + 'px', 
+                            zIndex : (scale * 100) >> 0
+                        });
+
+                        // If image has loaded, update its dimensions according to the calculate scale.
+                        // Position it relative to the origin div, so the origin div si in the center.
+                        if (loaded) {
+                            $image.css({
+                                width: (orgWidth * scale) + 'px',
+                                height :(orgHeight * scale) + 'px',
+                                top : ((-orgHeight * scale) / 2) + 'px',
+                                left : ((-orgWidth * scale) / 2) + 'px'
+                            });
+                        }
+                    }
+                };
+
+                // Load the image and set the callback function.
+                loadImage ($image, $image.attr('src'), function ($image) {
+                    loaded = true;
+                    // Save the image width and height for the scaling calculation.
+                    orgWidth = $image.width();
+                    orgHeight = $image.height();
+                    // Make the item fade-in.
+                    $image.animate({
+                        opacity : 1
+                    }, 1000);
+                });
+                return that;
+            };
+
+        // Create a carousel.
+        var CreateCarousel = function ($wrap, options) {
+            var items = [],
+                rot = 0,
+                pause = false,
+                unpauseTimeout = 0,
+                // Now calculate the amount to rorate per framRate tick.
+                rotAmount = (Math.PI * 2) * (options.framRate / options.rotRate),
+                $images = $('img', $wrap),
+                // Calculate the angular spacing between items.
+                spacing = (Math.PI / $images.length) * 2,
+                // this is the angle of the first item at the front of the carousel.
+                angle = Math.PI / 2,
+                i;
+            // Create a function that is called when the mose moves over or out of an item.
+            $wrap.bind('mouseover mouseout', function (evt) {
+                // Has the event been triggered on an image? return if not.
+                if (!$(evt.target).is('img')) {
+                    return;
+                }
+
+                // if mouseover, the pause the carousel.
+                if (evt.type == 'mouseover') {
+                    // Stop the unpause timeout if it is runing.
+                    clearTimeout(unpauseTimeout);
+                    pause = true;
+                } else {
+                    // If mouseout, restart carousel, but after a small delay to avoid jerking movements as the mouse moves between items.
+                    unpauseTimeout = setTimeout(function () {
+                        pause = false;
+                    }, 200);
+                }
+            });
+
+            // This loop runs throungh the list of images and create a carousel itme for each one.
+            for (i = 0; i < $images.length; i++) {
+                var image = $images[i];
+                var item = createItem($(image), angle, options);
+                items.push(item);
+                angle += spacing;
+            }
+            // The setInterval will rotate all items in the carousel every 30ms, unless the carousel is pause.
+            setInterval(function () {
+                if (!pause) {
+                    rot += rotAmount;
+                }
+                for (i = 0; i < items.length; i++) {
+                    items[i].update(rot);
+                }
+            }, options.framRate);
+        };
+
+        // This is the jQuery plug-in part. It iterates through the list of DOM elements that wrap groups of images.
+        // These groups of images are turned into carousels.
+        $.fn.Carouel = function (options) {
+            this.each(function () {
+
+                // User option are merge with default options.
+                options = $.extend({}, $.fn.Carouel.defaults, options);
+                // Each wrapping element is given relative position (so the absolute positioning of the carousel items works), and the width and height are set as specified in the options
+                $(this).css({
+                    position : 'relative', 
+                    width : options.width + 'px', 
+                    height : options.height + 'px', 
+                });
+                CreateCarousel($(this), options);
+            });
+        };
+
+        // These are the default options.
+        $.fn.Carouel.defaults = {
+            radiusX : 230,      // Horizontal radius.
+            rediusY : 80,       // Vertical radius.
+            width : 512,        // Width of wrapping element.
+            height : 300,       // Height of wrapping elemnt.
+            framRate : 30,      // Frame rate imn milliceconds.
+            rotRate :  5000,    // Time it takes for carousel to make one complete rotation
+            minScale : 0.6      // This is the smallest scale applied to the farthest item.
+        };
+    })(jQuery);
+    // End of jQuery carousel plug-in
+    $(function () {
+        // Create a carousel on all wrapping elements with a class of .carousel.
+        $('.carousel').Carouel({
+            width : 512,
+            height : 300,
+            radiusX : 430,
+            radiusY : 70,
+            minScale : 0.6 
+        });
+    })
+    </script>
+    </body>
+</html>
