@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv='Content-Type' content="text/html; charset=utf-8">
+    <!-- <meta name='viewport' content='width=device-width, init-scale=1.0, minimum-scale=1.0, user-scale=no'> -->
+</head>
+<body>
+    <canvas id="canvas" width='600' height='400'>Your browser do not support the canvas!</canvas>
+<script>
+    (function () {
+        var canvas = document.getElementById('canvas'),
+            ctx = canvas.getContext('2d');
+        var imagesUrl = ['stone.jpg', 'scissor.jpg', 'cloth.jpg'];
+        var gameObjs = [];
+
+        var gameObj = function (n) {
+            var that = {};
+            that.value = parseInt(n);
+            that.x = 0;
+            that.y = 0;
+
+            var img = new Image();
+            img.src = imagesUrl[that.value];
+
+            that.draw = function () {
+                img.onload = function () {
+                    ctx.drawImage(img, 200, 200, 200, 200, that.x, that.y, 200, 200);
+                };             
+            };
+            return that;
+        };
+
+        // compete the game
+        var compete = function (x, y) {
+            var max = Math.max(x, y),
+                min = Math.min(x, y);
+            console.log(max, min);
+            ctx.fillStyle='#000';
+            ctx.font = "italic 30px sans-serif";
+            if (max == 2 && min == 1) {
+                ctx.fillText('scissor win!', 50, 300);
+            }
+            if (max == 2 && min == 0) {
+                ctx.fillText('cloth win!', 50, 300);
+            }
+            if (max == 1 && min == 0) {
+                ctx.fillText('stone win!', 50, 300);
+            } 
+            if (max == min) {
+                ctx.fillText('no win, no lose', 50, 300);
+            }
+        };
+
+        var init = function () {
+            var first = Math.floor(Math.random() * 3),
+                second = Math.floor(Math.random() * 3);
+            if (first == 3) {
+                first = Math.floor(Math.random() * 3);
+            }
+            if (second == 3) {
+                second = Math.floor(Math.random() * 3);
+            }
+
+            var firstX = 0,
+                firstY = 0,
+                secondX = 250,
+                secondY = 0;
+            var firstObj = gameObj(first),
+                secondObj = gameObj(second);
+            firstObj.x = firstX;
+            firstObj.y = firstY;
+            secondObj.x = secondX;
+            secondObj.y = secondY;
+            gameObjs.push(firstObj);
+            gameObjs.push(secondObj);
+
+            ctx.fillStyle = '#ccc';
+            ctx.rect(0, 0, canvas.width, canvas.height);
+            ctx.fill();
+            // draw two game objects
+            for(var i = 0, len = gameObjs.length; i < len; i++) {
+                gameObjs[i].draw();
+            }
+
+            // get game result;
+            compete(firstObj.value, secondObj.value);
+        };
+        init();
+        document.onclick = function () {
+            init();
+        }
+    })();
+</script>
+</body>
+</html>
