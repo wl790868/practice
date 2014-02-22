@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head></head>
+<body>
+    <canvas id="canvas" width='800' height='600' border='2px solid red'></canvas>
+    <img src="1.jpg" alt="" id="rotImg">
+    <input type="button" id="left" value='left' >
+    <input type="button" id="right" value='right'>
+<script>
+    var ctx = document.getElementById('canvas').getContext('2d');
+    
+    var rotate = function (canvas, img, rot) {
+        // get the width and height of image
+        var w = img.width,
+            h = img.height;
+        console.log(w, h);
+        // 角度转化为弧度
+        if (!rot) {
+            rot = 0;
+        }
+        var rotation = Math.PI * rot / 180;
+
+        var c = Math.round(Math.cos(rotation) * 1000) / 1000;
+        var s = Math.round(Math.sin(rotation) * 1000) / 1000;
+
+        // 旋转后的canvas大小
+        canvas.height = Math.abs(c * h) + Math.abs(s * w);
+        canvas.width = Math.abs(c * w) + Math.abs(s * h);
+        console.log(canvas.width, canvas.height, c, s, w, h);
+        // 开始绘图
+        var ctx = canvas.getContext('2d');
+        ctx.save();
+
+        // 改变中心点
+        if (rotation <= Math.PI / 2) {
+            ctx.translate(s * h, 0);
+        } 
+        else if (rotation <= Math.PI) {
+            ctx.translate(canvas.width, -c * h);
+        }
+        else if (rotation <= Math.PI) {
+            ctx.translate(-c * w, canvas.height);
+        }
+        else {
+            ctx.translate(0, -s * w);
+        }
+
+        // 旋转
+        ctx.rotate(rotation);
+        ctx.drawImage(img, 0, 0, w, h);
+        ctx.restore();
+        img.style.display = 'none';
+    };
+
+    var param = {
+        canvas : document.getElementById('canvas'),
+        img : document.getElementById('rotImg'),
+        rot : 0
+    };
+    var leftBtn = document.getElementById('left');
+    var rightBtn = document.getElementById('right');
+    var events = {
+        right : function () {
+            param.rot += 90;
+            rotate(param.canvas, param.img, param.rot);
+            if(param.rot === 270) {
+                param.rot = -90;
+            }
+        },
+        left : function () {
+            param.rot -= 90;
+            if(param.rot == -90) {
+                param.rot = 270;
+            }
+            rotate(param.canvas, param.img, param.rot);
+        }
+    }
+    left.onclick = function () {
+        events.left();
+        return false;
+    };
+    right.onclick = function () {
+        events.right();
+        return false;
+    };
+    // rotate(param.canvas, param.img, param.rot);
+</script>
+</body>
+</html>
